@@ -1,0 +1,3 @@
+springmvc :
+  application :
+     scanPackage : com.ji.test
