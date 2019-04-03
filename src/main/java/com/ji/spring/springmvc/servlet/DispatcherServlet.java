@@ -137,13 +137,27 @@ public class DispatcherServlet extends HttpServlet {
                     Field[] declaredFields = t.getDeclaredFields();
                     for (Field field : declaredFields){
                         String filed_name = field.getName();
-                        if (req.getParameter(filed_name)!=null||"".equals(req.getParameter(filed_name))){
-                            field.setAccessible(true);
-                            try {
-                                field.set(o,req.getParameter(filed_name));
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                                System.out.println("实体类参数注入失败");
+                        Class<?> fieldType = field.getType();
+                        field.setAccessible(true);
+                        if(fieldType == String.class){
+                            if (!isEmpty(req.getParameter(filed_name))){
+                                try {
+                                    field.set(o,req.getParameter(filed_name));
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                    System.out.println("实体类参数注入失败");
+                                }
+                            }
+                        }else if (fieldType == Integer.class){
+                            if (!isEmpty(req.getParameter(filed_name))){
+                                try {
+                                    String parameter1 = req.getParameter(filed_name);
+                                    Integer i = Integer.parseInt(parameter1);
+                                    field.set(o,i);
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                    System.out.println("实体类参数注入失败");
+                                }
                             }
                         }
                     }
