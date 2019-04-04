@@ -32,6 +32,7 @@ import java.util.*;
 public class DispatcherServlet extends HttpServlet {
     private List<String> classNameList = new ArrayList<String>();
     private Map<String,HandlerMapping> handlerMappings = new HashMap<>();
+    HttpRequestHandler httpRequestHandler;
     @Override
     public void init() throws ServletException {
         //扫描包下的类
@@ -46,6 +47,7 @@ public class DispatcherServlet extends HttpServlet {
         initWired();
         //初始化HandlerMapping
         initHandlerMapping();
+        httpRequestHandler = new HttpRequestHandler();
     }
 
     private void initHandlerMapping() {
@@ -284,7 +286,7 @@ public class DispatcherServlet extends HttpServlet {
         Object instance = handlerMapping.getController();
         Method method = handlerMapping.getMethod();
         Object[] args = searchParam(method, req, resp);
-        Handler.invoke(instance,method,args,req,resp);
+        httpRequestHandler.invoke(instance,method,args,req,resp);
     }
     //判断字符串是否为空
     public static boolean isEmpty(String s){

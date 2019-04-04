@@ -20,8 +20,8 @@ public class UserController {
     @RequestMapping("findUser")
     public List<User> findUser(HttpServletResponse response) throws IOException {
         List<User> list = userService.findUser();
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectWriter writer = objectMapper.writer();
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        ObjectWriter writer = objectMapper.writer();*/
         /*String s = writer.writeValueAsString(user);
         response.setContentType("text/html;charset=UTF-8");
         response.getWriter().write(s);*/
